@@ -58,61 +58,92 @@ function App() {
 }
 
 function Header() {
+    const style = {};
     return (
         <header className="header">
-            <h1>Fast React Pizza Co.</h1>
+            <h1 style={style}>Fast React Pizza Co.</h1>
         </header>
     );
 }
 
 function Menu() {
+    const pizzas = pizzaData;
+    const numPizzas = pizzas.length;
     return (
         <main className="menu">
             <h2>Our Menu</h2>
-            <Pizza
-                name="Pizza Spinachi"
-                ingredients="Tomato, mozarella, spinach, and ricotta cheese"
-                photoName="pizzas/spinaci.jpg"
-                price={10}
-            />
-            <Pizza
-                name="Pizza Funghi"
-                ingredients="Tomato, mozarella, mushrooms, and onion"
-                photoName="pizzas/funghi.jpg"
-                price={12}
-            />
+
+            {numPizzas > 0 ? (
+                <>
+                    <p>
+                        Authentic Italian cuisine. 6 creative dishes to choose
+                        from. All from our stone oven, all organic, all
+                        delicious.
+                    </p>
+                    <ul className="pizzas">
+                        {pizzaData.map((pizzaPie) => (
+                            <Pizza pizzaObj={pizzaPie} key={pizzaPie.name} />
+                        ))}
+                    </ul>
+                </>
+            ) : (
+                <p>We're still working on our menu!</p>
+            )}
         </main>
     );
 }
-function Pizza(props) {
+function Pizza({ pizzaObj }) {
     //console.log(props.name);
+    //if (pizzaObj.soldOut) return null;
     return (
-        <div className="pizza">
-            <img src={props.photoName} alt="" />
+        <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
+            <img src={pizzaObj.photoName} alt="" />
             <div>
-                <h3>{props.name}</h3>
-                <p>{props.ingredients}</p>
-                <span>${props.price + 3}</span>
+                <h3>{pizzaObj.name}</h3>
+                <p>{pizzaObj.ingredients}</p>
+                <span>
+                    {pizzaObj.soldOut ? "Sold Out" : "$" + pizzaObj.price}
+                </span>
             </div>
-        </div>
+        </li>
     );
 }
 
-function Footer() {
+function Footer(props) {
+    //console.log(props);
     //return React.createElement("footer", null, "We're open!");
     const hour = new Date().getHours();
-    const openHour = 12;
-    const closeHour = 22;
+    const openHour = 10;
+    const closeHour = 20;
     const isOpen = hour >= openHour && hour <= closeHour;
-    console.log(isOpen);
+    //console.log(isOpen);
 
     //if (hour >= openHour && <= closeHour){ }
     return (
         <footer className="footer">
             {new Date().toLocaleDateString()}
             <br />
-            We're Currently Open!
+
+            {isOpen ? (
+                <Order closeHour={closeHour} />
+            ) : (
+                <p>
+                    Sorry, we're closed! We're open from {openHour}:00 to{" "}
+                    {closeHour}:00
+                </p>
+            )}
         </footer>
+    );
+}
+
+function Order({ closeHour, openHour }) {
+    return (
+        <div className="order">
+            <p>
+                We're open until {openHour}:00. Come visit us or order online.
+            </p>
+            <button className="btn">Order</button>
+        </div>
     );
 }
 

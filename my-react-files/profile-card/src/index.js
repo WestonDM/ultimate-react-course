@@ -2,6 +2,54 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
 
+const skills = [
+    {
+        skill: "HTML + CSS",
+        level: "advanced",
+        color: "red",
+    },
+    {
+        skill: "Javascript",
+        level: "advanced",
+        color: "orange",
+    },
+    {
+        skill: "React",
+        level: "intermediate",
+        color: "yellow",
+    },
+    {
+        skill: "PHP",
+        level: "intermediate",
+        color: "green",
+    },
+    {
+        skill: "Python",
+        level: "Beginner",
+        color: "blue",
+    },
+    {
+        skill: "Git",
+        level: "intermediate",
+        color: "green",
+    },
+    {
+        skill: "Web Design",
+        level: "Beginner",
+        color: "blue",
+    },
+    {
+        skill: "Video Editing",
+        level: "advanced",
+        color: "purple",
+    },
+    {
+        skill: "After Effects",
+        level: "advanced",
+        color: "violet",
+    },
+];
+
 function App() {
     return (
         <div className="card">
@@ -19,15 +67,9 @@ function App() {
         for each web dev skill that you have,
         customized with props */}
                 <div className="skill-list">
-                    <SkillList name="HTML/CSS" emoji="&#128512;" color="red" />
-                    <SkillList
-                        name="JavaScript"
-                        emoji="&#129299;"
-                        color="orange"
-                    />
-                    <SkillList name="React" emoji="&#128406;" color="yellow" />
-                    <SkillList name="JSX" emoji="&#128405;" color="green" />
-                    <SkillList name="PHP" emoji="&#128405;" color="blue" />
+                    {skills.map((skillSet) => (
+                        <SkillList skillObj={skillSet} />
+                    ))}
                 </div>
             </div>
         </div>
@@ -51,10 +93,17 @@ function Intro(props) {
     );
 }
 
-function SkillList(props) {
+function SkillList({ skillObj }) {
+    //const skillLevel = skillObj.level;
     return (
-        <p className="skill" style={{ backgroundColor: props.color }}>
-            {props.name} {props.emoji}
+        <p className="skill" style={{ backgroundColor: skillObj.color }}>
+            {skillObj.skill}{" "}
+            {skillObj.level === "advanced"
+                ? "\uD83D\uDE00"
+                : skillObj.level === "intermediate"
+                ? "\uD83D\uDC4D"
+                : "\uD83D\uDD95"}
+            <span>{skillObj.level === "advanced" && "👍"}</span>
         </p>
     );
 }
